@@ -1,9 +1,9 @@
 //родительский класс для вложенных блоков, содержит общий конструктор,
 //методы очистки блока, сворачивания, создания элемента
 
-import { API } from "../API.js";
-const api = new API();
-export class General {
+import api from "../api/api.js";
+
+export default class Main {
 
     constructor(data) {
         this.data = data;
@@ -14,17 +14,38 @@ export class General {
             parent.childNodes[i].remove();
         }
     }
-    generalCreateElement(type, className) {
-        let element = document.createElement(type);
-        element.classList.add(className);
+    getElement(type, options) {
+        const element = document.createElement(type);
+		console.log(typeof options);
+        switch (typeof options) {
+            case 'object':
+                {
+                    for (let attr in options) {
+                        element.setAttribute(attr, options[attr])
+						console.log(options[attr]);
+                    }
+					break
+                }
+            case 'string':
+                {
+                    element.classList.add(options)
+					console.log(options);
+					break
+                }
+        }
         return element;
     }
+
     show(element, func) {
         if (element.childNodes.length > 1) {
+			element.classList.remove('open')
             for (let i = 1; i < element.childNodes.length; i++) {
                 element.childNodes[i].remove();
             }
-        } else func();
+        } else{
+			element.classList.add('open')
+			func();
+		}
     }
     render() {}
 }

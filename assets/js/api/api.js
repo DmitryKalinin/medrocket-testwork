@@ -17,9 +17,16 @@ const api = {
             .catch(err => console.log(err))
         return result;
     },
-    getFavorite() {
+    getImage: function(id) {
+        const result = fetch(`https://json.medrocket.ru/photos?id=${id}`)
+            .then(response => response.json())
+            .catch(err => console.log(err))
+        return result;
+    },
+    getFavourites() {
         let response = [];
         let keys = Object.keys(localStorage);
+        console.log(keys);
         keys.map(item => {
             response.push(JSON.parse(localStorage.getItem(item)))
         })
