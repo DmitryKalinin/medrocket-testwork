@@ -78,6 +78,7 @@ export default class Images extends Main {
            
             usersBlock.appendChild(imageBlock);
         })
+        
         usersBlock.addEventListener("mouseover", function(e) {
             const imageBlock = e.target.closest('.image-block')
             if(imageBlock){
