@@ -59,10 +59,6 @@ body{
     transition: 0.3s;
 }
 
-.menu-item:hover {
-    background-color: rgb(255, 195, 117);
-    transition: 0.3s;
-}
 
 .users {
     display: flex;
@@ -80,6 +76,7 @@ body{
 }
 .user__name,
 .album__name{
+	cursor: pointer;
 	position: relative;display: flex;
 	align-items: center;
 	height: 80px;
@@ -106,24 +103,23 @@ body{
 .albums{
 	padding-left: 56px;
 }
-.user-name:hover {
-    background-color: rgba(248, 197, 197, 0.719);
-    transition: 0.3s;
-}
-
-.album-name:hover {
-    background-color: rgba(170, 107, 107, 0.719);
-    transition: 0.3s;
-}
 
 .image-block {
     display: flex;
     align-items: start;
     justify-content: center;
     position: relative;
+	flex-direction: column;
 }
 .image-block img{
 	border-radius: 4px;
+	cursor: pointer;
+}
+.image-block__title{
+	margin: 12px 0 0 0;
+	font-size: 14px;
+	line-height: 150%;
+	color: #787878;
 }
 .star {
     color: yellow;
@@ -140,7 +136,14 @@ body{
 .images{
 	display: grid;
 	grid-template-columns: repeat(3,150px);
+	align-items: start;
 	gap: 42px;
+	margin-top: 32px;
+	padding-left: 49px;
+}
+.images--favourites{
+	padding: 0;
+	margin-top: 56px;
 	justify-content: center;
 }
 #popup {
@@ -174,9 +177,20 @@ body{
 	padding: 4px 8px;
 }
 
-span,
-h3,
-h4,
-img {
-    cursor: pointer;
+.empty{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20vh;
+}
+.empty__img{
+	margin-bottom: 32px;
+}
+.empty__title{
+	font-size: 22px;
+	margin: 0 0 8px 0;
+}
+.empty__title{
+	font-size: 18px;
+	margin: 0;
 }

@@ -24,17 +24,52 @@ const api = {
         return result;
     },
     getFavourites() {
-        let response = [];
-        let keys = Object.keys(localStorage);
-        console.log(keys);
-        keys.map(item => {
-            response.push(JSON.parse(localStorage.getItem(item)))
-        })
-
-        return response;
+        let favourites = JSON.parse(localStorage.getItem('favourites'));
+        if(!favourites){
+            favourites = [];
+            localStorage.setItem('favourites', JSON.stringify(favourites))
+        }
+        return favourites
     },
-    getPages() {
-        return { menu1: "Каталог", menu2: "Избранное" };
-    }
+    setFavourites(image){
+        let favourites = JSON.parse(localStorage.getItem('favourites'));
+        
+        //Если нет элемента в локальном хранилище
+        if(!this.findFavourite(image)){
+            favourites.push(image);
+            localStorage.setItem('favourites', JSON.stringify(favourites))
+        }
+        else{
+            favourites = [];
+            favourites.push(image);
+            localStorage.setItem('favourites', JSON.stringify(favourites))
+        }
+    },
+    removeFavourite(image){
+        let favourites = JSON.parse(localStorage.getItem('favourites'));
+        if(favourites?.length){
+            //Если нет элемента в локальном хранилище
+            favourites = favourites.filter(favImg => favImg.id !== image.id)
+            localStorage.setItem('favourites', JSON.stringify(favourites))
+        }
+    },
+    findFavourite(image){
+        let favourites = JSON.parse(localStorage.getItem('favourites'));
+        if(favourites?.length){
+            if(favourites.find(favImg => favImg.id === image.id)){
+                return true
+            }
+        }
+        return false;
+    },
+    emptyFavourites(){
+        let favourites = JSON.parse(localStorage.getItem('favourites'));
+        if(favourites?.length){
+           return false;
+        }
+        return true;
+    },
+    starEmpty: "./assets/img/star_empty.png",
+    starActive: "./assets/img/star_active.png"
 }
 export default api;

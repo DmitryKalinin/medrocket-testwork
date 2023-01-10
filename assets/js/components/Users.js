@@ -5,22 +5,24 @@ import Album from "./Album.js"
 export default class Users extends Main {
 
 
-    render(parent) {
-        console.log(this.data);
-        const usersBlock = this.getElement("div", "users");
+    render() {
+
+        const usersWrapper = this.getElement("div", "users");
         this.data.map(user => {
             const userBlock = this.getElement("div", "user");
             const userName = this.getElement("h3", "user__name");
+
             userName.textContent = user.name;
-            userBlock.appendChild(userName);
             userName.addEventListener("click", () => {
                 this.show(userBlock, async() => {
-                    const album = new Album(await this.api.getAlbums(user.id));
-                    album.render(userBlock)
+                    const album = new Album(await this.api.getAlbums(user.id), userBlock);
+                    album.render()
                 })
             })
-            usersBlock.appendChild(userBlock);
+
+            userBlock.appendChild(userName);
+            usersWrapper.appendChild(userBlock);
         })
-        parent.appendChild(usersBlock)
+        this.parent.appendChild(usersWrapper)
     }
 }

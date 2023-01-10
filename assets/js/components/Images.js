@@ -10,25 +10,25 @@ import  Main  from "./Main.js";
 export default class Images extends Main {
     
     starElement = (image) => {
-        let star = document.createElement("img");
-        if (localStorage.getItem(`${image.id}`) === null) {
-            star.setAttribute("src", "./assets/img/star_empty.png");
+        let star = this.getElement("img", "star");
+        if (!this.api.findFavourite(image)) {
+            star.setAttribute("src", this.api.starEmpty);
         } else {
-            star.setAttribute("src", "./assets/img/star_active.png");
+            star.setAttribute("src", this.api.starActive);
         }
-        //star.setAttribute("width", "15px");
-        star.classList.add("star");
+
         star.addEventListener("click", () => {
             this.addImagetoLocalStorage(star, image);
         })
         return star;
     }
+
     popupText = (text) => {
-        let titleImage = document.createElement("span");
-        titleImage.classList.add("popup-text");
+        let titleImage = this.getElement("span", "popup-text");
         titleImage.textContent = text;
         return titleImage;
     }
+
     showPopup = (image) => {
         const popup = document.getElementById("popup")
         popup.innerHTML = "";
@@ -45,25 +45,26 @@ export default class Images extends Main {
             popup.innerHTML = "";
         })
     }
+
     addImagetoLocalStorage = (star, image) => {
-       
-        if (localStorage.getItem(`${image.id}`) === null) {
-            localStorage.setItem(`${image.id}`, JSON.stringify(image));
-            star.setAttribute("src", "./assets/img/star_active.png");
-        } else {
-            localStorage.removeItem(`${image.id}`);
-            star.setAttribute("src", "./assets/img/star_empty.png");
+        if(this.api.findFavourite(image)){
+            this.api.removeFavourite(image);
+            star.setAttribute("src", this.api.starEmpty);
+        }
+        else {
+            this.api.setFavourites(image);
+            star.setAttribute("src", this.api.starActive);
         }
     }
-    render(parent) {
+
+    render() {
 
         const usersBlock = this.getElement("div", "images");
         this.data.map(user => {
             const imageBlock = this.getElement("div", "image-block");
             let titleImage = this.popupText(user.title)
             const image = this.getElement("img",{
-                "src":  user.thumbnailUrl,
-                "width": "150px"
+                "src":  user.thumbnailUrl
             })
             
             const star = this.starElement(user);
@@ -74,14 +75,22 @@ export default class Images extends Main {
             image.addEventListener("click", () => {
                 this.showPopup(user);
             })
-            imageBlock.addEventListener("mouseover", () => {
-                titleImage.style.display = "block";
-            })
-            imageBlock.addEventListener("mouseout", () => {
-                titleImage.style.display = "none";
-            })
+           
             usersBlock.appendChild(imageBlock);
         })
-        parent.appendChild(usersBlock)
+        usersBlock.addEventListener("mouseover", function(e) {
+            const imageBlock = e.target.closest('.image-block')
+            if(imageBlock){
+                imageBlock.querySelector('.popup-text').style.display = "block";
+            }
+            
+        })
+        usersBlock.addEventListener("mouseout", function(e) {
+            const imageBlock = e.target.closest('.image-block')
+            if(imageBlock){
+                imageBlock.querySelector('.popup-text').style.display = "none";
+            }
+        })
+        this.parent.appendChild(usersBlock);
     }
 }

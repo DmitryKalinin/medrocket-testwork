@@ -5,9 +5,10 @@ import api from "../api/api.js";
 
 export default class Main {
 
-    constructor(data) {
+    constructor(data, parent) {
         this.data = data;
         this.api = api;
+		this.parent = parent;
     }
     clearChildren(parent) {
         for (let i = 1; i < parent.childNodes.length; i++) {
@@ -16,20 +17,17 @@ export default class Main {
     }
     getElement(type, options) {
         const element = document.createElement(type);
-		console.log(typeof options);
         switch (typeof options) {
             case 'object':
                 {
                     for (let attr in options) {
                         element.setAttribute(attr, options[attr])
-						console.log(options[attr]);
                     }
 					break
                 }
             case 'string':
                 {
                     element.classList.add(options)
-					console.log(options);
 					break
                 }
         }
